@@ -121,7 +121,22 @@ def organize_files(source_folder: str):
             else:
                 errors += 1
 
-    print(f"\nDone! {moved} moved, {skipped} skipped, {errors} error(s).")
+    # Delete empty subfolders (deepest first, skip the root source folder)
+    subfolders = sorted(
+        [f for f in source.rglob("*") if f.is_dir()],
+        key=lambda p: len(p.parts),
+        reverse=True
+    )
+    deleted_folders = 0
+    for folder in subfolders:
+        try:
+            folder.rmdir()  # only removes if empty
+            print(f"  [DEL] Removed empty folder: {folder.relative_to(source)}")
+            deleted_folders += 1
+        except OSError:
+            pass  # folder not empty or permission denied, skip
+
+    print(f"\nDone! {moved} moved, {skipped} skipped, {errors} error(s), {deleted_folders} empty folder(s) removed.")
     print(f"Files organized in: {DESTINATION_ROOT}")
 
 def main():
