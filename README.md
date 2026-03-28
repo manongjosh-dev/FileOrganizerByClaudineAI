@@ -11,6 +11,7 @@ A Python-based file organizer that automatically sorts files from any folder (in
 - Moves files into category folders inside `D:\Organized By ClaudineAI`
 - **Auto-creates** category folders if they don't exist yet
 - Handles **duplicate filenames** by appending `(1)`, `(2)`, etc. — no files are overwritten
+- **Deletes empty subfolders** from the source path after organizing
 - Prints a live status log and a final summary
 
 ---
@@ -78,8 +79,10 @@ Found 42 file(s). Organizing...
   [OK] archive.zip       ->  Archives/
   [OK] script.py         ->  Code/
   ...
+  [DEL] Removed empty folder: old_stuff
+  [DEL] Removed empty folder: old_stuff\archive
 
-Done! 42 moved, 0 skipped, 0 error(s).
+Done! 42 moved, 0 skipped, 0 error(s), 2 empty folder(s) removed.
 Files organized in: D:\Organized By ClaudineAI
 ```
 
@@ -100,6 +103,7 @@ This folder and its category subfolders are created automatically if they don't 
 - The original folder structure is flattened — files from all subfolders are moved into their category folder directly
 - Files are **moved**, not copied — the source files will no longer be in their original location
 - Files that cannot be moved (e.g. locked or permission-denied) are skipped and reported
+- Empty subfolders in the source path are automatically deleted after all files are moved; folders that still contain files are left untouched
 
 ---
 
